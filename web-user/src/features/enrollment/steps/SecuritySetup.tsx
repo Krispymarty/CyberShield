@@ -1,0 +1,55 @@
+import { ArrowLeft, KeyRound, ShieldCheck } from "lucide-react";
+
+type Props = {
+  onNext: () => void;
+  onBack: () => void;
+};
+
+export function SecuritySetup({ onNext, onBack }: Props) {
+  return (
+    <>
+      <h1 className="font-semibold mb-3">Security Setup</h1>
+      <p className="text-slate-600 mb-10">
+        Enable passkey and multi-factor protection before entering your dashboard.
+      </p>
+
+      <div className="bg-white border border-slate-300 rounded-2xl p-9 shadow-sm">
+        <div className="space-y-5">
+          <div className="border border-slate-300 rounded-xl p-6 bg-[#eef4ff] flex gap-5">
+            <KeyRound size={32} className="text-blue-600" />
+            <div>
+              <h3 className="font-semibold mb-2">Passkey Authentication</h3>
+              <p className="text-sm text-slate-600">
+                Passwordless authentication will be enabled for your account.
+              </p>
+            </div>
+          </div>
+
+          <div className="border border-slate-300 rounded-xl p-6 bg-[#eef4ff] flex gap-5">
+            <ShieldCheck size={32} className="text-blue-600" />
+            <div>
+              <h3 className="font-semibold mb-2">Multi-Factor Authentication</h3>
+              <p className="text-sm text-slate-600">
+                Additional protection will be applied to sensitive actions.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-slate-300 mt-7 pt-5 flex items-center justify-between">
+          <button onClick={onBack} className="flex items-center gap-3 font-semibold">
+            <ArrowLeft size={22} />
+            Back
+          </button>
+
+          <button
+            onClick={onNext}
+            className="bg-[#020817] text-white px-9 py-2 rounded font-semibold"
+          >
+            Complete Enrollment
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}

@@ -1,7 +1,7 @@
-// EnrollmentPortal.tsx
+
 import { ArrowLeft, Check, Shield } from "lucide-react";
 
-export default function EnrollmentPortal() {
+export default function Register() {
   return (
     <div className="min-h-screen bg-[#f6f8fd] text-slate-950">
       <header className="h-20 bg-[#062747] text-white flex items-center justify-between px-14 rounded-t-[28px]">
