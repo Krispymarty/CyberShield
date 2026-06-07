@@ -1,18 +1,20 @@
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-8 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+    <footer className="border-t border-slate-200 bg-white">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-7 text-sm text-slate-500 md:flex-row lg:px-8">
+        <p>© 2026 Sentinel AI Security Systems. All rights reserved.</p>
 
-        <p>
-          © 2026 Sentinel AI Security Systems. All rights reserved.
-        </p>
-
-        <div className="flex gap-6 mt-4 md:mt-0">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Compliance</a>
+        <div className="flex gap-6">
+          <a href="#" className="cursor-pointer transition hover:text-blue-600">
+            Privacy Policy
+          </a>
+          <a href="#" className="cursor-pointer transition hover:text-blue-600">
+            Terms of Service
+          </a>
+          <a href="#" className="cursor-pointer transition hover:text-blue-600">
+            Compliance
+          </a>
         </div>
-
       </div>
     </footer>
   );
