@@ -7,20 +7,12 @@ Main entry point for the FastAPI application.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.auth import router as auth_router
-from app.api.dashboard import router as dashboard_router
-
-# from app.database.postgres import engine  For postgresql, after changing the database URL, run this line once to create the tables in the database. 
-from app.models.user import User
-from app.database.postgres import Base
-
-from app.api.transactions import router as transaction_router
-from app.api.device import router as device_router
 from app.api.alert import router as alert_router
 from app.api.admin import router as admin_router
-
-
-
+from app.api.auth import router as auth_router
+from app.api.dashboard import router as dashboard_router
+from app.api.device import router as device_router
+from app.api.transactions import router as transaction_router
 
 app = FastAPI(title="Sentinel AI API")
 
@@ -39,8 +31,8 @@ app.include_router(
 )
 
 
-@app.get("/health")
-async def health_check():
+@app.get("/health", response_model=dict[str, str])
+async def health_check() -> dict[str, str]:
     return {"status": "healthy"}
 
 app.include_router(
@@ -72,5 +64,3 @@ app.include_router(
     prefix="/api/admin",
     tags=["Admin"]
 )
-
-# Base.metadata.create_all(bind=engine)   For postgresql, after changing the database URL, run this line once to create the tables in the database. 
