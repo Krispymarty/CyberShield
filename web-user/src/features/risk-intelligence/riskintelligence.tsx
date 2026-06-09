@@ -13,7 +13,6 @@ import {
 export default function RiskIntelligence() {
   return (
     <div className="min-h-screen bg-[#f4f6fb] flex text-[#071326]">
-      <Sidebar active="Risk Engine" />
 
       <main className="flex-1 px-8 py-9">
         <div className="flex justify-between mb-8">
@@ -140,33 +139,6 @@ export default function RiskIntelligence() {
   );
 }
 
-function Sidebar({ active }: { active: string }) {
-  const items = [
-    ["Dashboard", LayoutDashboard],
-    ["Accounts", Lock],
-    ["Security", Shield],
-    ["Risk Engine", TriangleAlert],
-    ["Support", HelpCircle],
-  ];
-
-  return (
-    <aside className="w-64 bg-[#062747] text-white px-4 py-8">
-      <h2 className="text-xl font-bold text-white/60">Sentinel AI</h2>
-      <p className="text-sm text-white/35 mb-10">Secure Banking</p>
-
-      {items.map(([name, Icon]: any) => (
-        <div
-          key={name}
-          className={`flex items-center gap-4 px-4 py-3 rounded-lg mb-2 text-sm font-bold ${
-            name === active ? "bg-white/8 text-white" : "text-white/35"
-          }`}
-        >
-          <Icon size={20} /> {name}
-        </div>
-      ))}
-    </aside>
-  );
-}
 
 function Metric({ title, value, green }: any) {
   return (
