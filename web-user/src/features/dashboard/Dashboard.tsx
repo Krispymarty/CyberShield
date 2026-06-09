@@ -20,6 +20,7 @@ import RiskIntelligence from "../risk-intelligence/riskintelligence";
 const navItems = [
   ["Dashboard", LayoutDashboard],
   ["Accounts", Wallet],
+  ["Transfer", Wallet],
   ["Security", Shield],
   ["Risk Engine", TriangleAlert],
   ["Support", HelpCircle],
