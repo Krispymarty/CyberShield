@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const deviceLogSchema = new mongoose.Schema({
-  user_id: { type: Number, required: true },
+  user_id: { type: String, required: true },
   device_id: String,
   device_type: String,
   browser: String,
@@ -11,7 +11,7 @@ const deviceLogSchema = new mongoose.Schema({
 });
 
 const behaviorLogSchema = new mongoose.Schema({
-  user_id: { type: Number, required: true },
+  user_id: { type: String, required: true },
   action: String,
   page: String,
   session_id: String,
@@ -19,7 +19,7 @@ const behaviorLogSchema = new mongoose.Schema({
 });
 
 const locationHistorySchema = new mongoose.Schema({
-  user_id: { type: Number, required: true },
+  user_id: { type: String, required: true },
   country: String,
   city: String,
   latitude: Number,
@@ -28,7 +28,7 @@ const locationHistorySchema = new mongoose.Schema({
 });
 
 const riskLogSchema = new mongoose.Schema({
-  user_id: { type: Number, required: true },
+  user_id: { type: String, required: true },
   risk_score: Number,
   risk_level: String,
   reason: String,
@@ -36,7 +36,7 @@ const riskLogSchema = new mongoose.Schema({
 });
 
 const alertSchema = new mongoose.Schema({
-  user_id: { type: Number, required: true },
+  user_id: { type: String, required: true },
   alert_type: String,
   severity: String,
   status: { type: String, default: "OPEN" },
@@ -44,7 +44,7 @@ const alertSchema = new mongoose.Schema({
 });
 
 const fraudCaseSchema = new mongoose.Schema({
-  user_id: { type: Number, required: true },
+  user_id: { type: String, required: true },
   case_id: String,
   description: String,
   status: { type: String, default: "OPEN" },
