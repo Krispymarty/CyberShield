@@ -18,19 +18,40 @@ export default function TransferWizard() {
 
       <div className="flex justify-between mb-10">
 
-        <div className={step === 1 ? "font-bold" : ""}>
-          1 Account
-        </div>
+  <button
+    onClick={() => setStep(1)}
+    className={`cursor-pointer ${
+      step === 1
+        ? "font-bold text-blue-600"
+        : "text-gray-500"
+    }`}
+  >
+    Account
+  </button>
 
-        <div className={step === 2 ? "font-bold" : ""}>
-          2 Recipient
-        </div>
+  <button
+    onClick={() => setStep(2)}
+    className={`cursor-pointer ${
+      step === 2
+        ? "font-bold text-blue-600"
+        : "text-gray-500"
+    }`}
+  >
+    Recipient
+  </button>
 
-        <div className={step === 3 ? "font-bold" : ""}>
-          3 Amount
-        </div>
+  <button
+    onClick={() => setStep(3)}
+    className={`cursor-pointer ${
+      step === 3
+        ? "font-bold text-blue-600"
+        : "text-gray-500"
+    }`}
+  >
+    Amount
+  </button>
 
-      </div>
+</div>
 
       {step === 1 && (
         <AccountStep onNext={() => setStep(2)} />
