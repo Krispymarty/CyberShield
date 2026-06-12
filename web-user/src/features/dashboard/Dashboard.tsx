@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import TransferPage from "../transfer/TransferPage";
 import {
   Bell,
   HelpCircle,
@@ -99,9 +100,11 @@ export default function Dashboard() {
         </header>
         {activePage === "Dashboard" && <DashboardHome />}
 {activePage === "Security" && <SecurityDashboard />}
-{activePage === "Risk Engine" && <RiskIntelligence />}
+        {activePage === "Risk Engine" && <RiskIntelligence />}
+        {activePage === "Accounts" && <TransferPage />}
 
 {activePage !== "Dashboard" &&
+  activePage !== "Accounts" &&
   activePage !== "Security" &&
   activePage !== "Risk Engine" && (
     <section className="px-5 py-8 lg:px-8">
