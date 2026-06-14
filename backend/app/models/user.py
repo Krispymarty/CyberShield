@@ -1,5 +1,6 @@
 from sqlalchemy import Column
 from sqlalchemy import String
+from sqlalchemy import Integer
 from sqlalchemy import Boolean
 
 from app.database.postgres import Base
@@ -9,7 +10,7 @@ class User(Base):
 
     __tablename__ = "users"
 
-    user_id = Column(String, primary_key=True)
+    user_id = Column(Integer, primary_key=True)
 
     full_name = Column(String)
 

@@ -27,7 +27,7 @@ class LoginRequest(BaseModel):
 
 
 class AuthUser(BaseModel):
-    user_id: str
+    user_id: int
     full_name: str
     email: EmailStr
     trust_score: int = Field(..., ge=0, le=100)
