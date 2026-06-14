@@ -3,7 +3,11 @@ Sentinel AI Backend Application
 
 Main entry point for the FastAPI application.
 """
+from app.database.postgres import Base, engine
 
+from app.models.user import User
+from app.models.account import Account
+from app.models.transaction import Transaction
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -15,6 +19,7 @@ from app.api.device import router as device_router
 from app.api.transactions import router as transaction_router
 
 app = FastAPI(title="Sentinel AI API")
+Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,

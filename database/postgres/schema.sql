@@ -1,5 +1,5 @@
 CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
+    user_id VARCHAR(20) PRIMARY KEY,
 
     full_name VARCHAR(100) NOT NULL,
 
@@ -18,7 +18,7 @@ CREATE TABLE users (
 CREATE TABLE accounts (
     account_id SERIAL PRIMARY KEY,
 
-    user_id INTEGER REFERENCES users(user_id),
+    user_id VARCHAR(20) REFERENCES users(user_id),
 
     account_number VARCHAR(20) UNIQUE NOT NULL,
 
@@ -35,7 +35,7 @@ CREATE TABLE accounts (
 CREATE TABLE beneficiaries (
     beneficiary_id SERIAL PRIMARY KEY,
 
-    user_id INTEGER REFERENCES users(user_id),
+    user_id VARCHAR(20) REFERENCES users(user_id),
 
     beneficiary_name VARCHAR(100),
 
@@ -50,7 +50,7 @@ CREATE TABLE beneficiaries (
 CREATE TABLE auth_status (
     auth_id SERIAL PRIMARY KEY,
 
-    user_id INTEGER REFERENCES users(user_id),
+    user_id VARCHAR(20) REFERENCES users(user_id),
 
     otp_verified BOOLEAN DEFAULT FALSE,
 
@@ -65,7 +65,7 @@ CREATE TABLE auth_status (
 CREATE TABLE login_history (
     login_id SERIAL PRIMARY KEY,
 
-    user_id INTEGER REFERENCES users(user_id),
+    user_id VARCHAR(20) REFERENCES users(user_id),
 
     ip_address VARCHAR(50),
 
