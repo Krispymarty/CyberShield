@@ -10,7 +10,7 @@ RiskLevel = Literal["LOW", "MEDIUM", "HIGH", "CRITICAL"]
 
 
 class TransferRequest(BaseModel):
-    user_id: str = Field(..., min_length=3, max_length=32)
+    user_id: int
     beneficiary_account: str = Field(..., min_length=8, max_length=24)
     beneficiary_name: str = Field(..., min_length=2, max_length=100)
     amount: Decimal = Field(..., gt=0, max_digits=12, decimal_places=2)
@@ -23,7 +23,7 @@ class TransferRequest(BaseModel):
 
 class TransactionItem(BaseModel):
     transaction_id: str
-    user_id: str
+    user_id: int
     transaction_type: TransactionType
     counterparty: str
     amount: Decimal = Field(..., ge=0)
@@ -42,5 +42,5 @@ class TransferResponse(BaseModel):
 
 
 class TransactionListResponse(BaseModel):
-    user_id: str
+    user_id: int
     transactions: list[TransactionItem]
