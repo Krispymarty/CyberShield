@@ -18,6 +18,7 @@ def get_auth_service(db: Session = Depends(get_db)) -> AuthService:
     return AuthService(db=db)
 
 
+
 @router.post("/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)
 async def register(
     payload: RegisterRequest,
@@ -25,9 +26,15 @@ async def register(
 ) -> AuthResponse:
     try:
         return service.register_user(payload)
+
     except ValueError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc)
+        ) from exc
+
     except SQLAlchemyError as exc:
+        print("SQL ERROR:", repr(exc))
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="PostgreSQL is unavailable",
@@ -41,10 +48,16 @@ async def login(
 ) -> AuthResponse:
     try:
         return service.login_user(payload)
+    
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
+    
     except SQLAlchemyError as exc:
+        print("SQL ERROR:", repr(exc))
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="PostgreSQL is unavailable",
-        ) from exc
+            detail=str(exc)
+    ) from exc
+
+
+

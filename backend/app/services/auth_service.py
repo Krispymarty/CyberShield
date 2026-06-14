@@ -2,7 +2,6 @@ from datetime import datetime, timezone
 import hashlib
 import hmac
 import os
-from uuid import uuid4
 
 from sqlalchemy import or_
 from sqlalchemy.exc import SQLAlchemyError
@@ -13,6 +12,7 @@ from app.schemas.auth import AuthResponse, AuthUser, LoginRequest, RegisterReque
 
 
 class AuthService:
+    print("AUTH SERVICE LOADED")
     def __init__(self, db: Session) -> None:
         self.db = db
 
@@ -28,16 +28,14 @@ class AuthService:
         fraud_signals = self._registration_signals(data)
         trust_score = 72 if fraud_signals else 94
         risk_level = "MEDIUM" if fraud_signals else "LOW"
-        user_id = self._generate_user_id()
 
         user = User(
-            user_id=user_id,
             full_name=data.full_name,
             email=str(data.email),
             phone=data.phone,
             password_hash=self._hash_password(data.password),
             is_blocked=False,
-        )
+            )   
         self.db.add(user)
         try:
             self.db.commit()
@@ -103,9 +101,6 @@ class AuthService:
         if data.location.lower() not in {"mumbai", "delhi", "bengaluru", "bangalore", "pune"}:
             signals.append("unusual_login_location")
         return signals
-
-    def _generate_user_id(self) -> str:
-        return f"USR-{uuid4().hex[:8].upper()}"
 
     def _hash_password(self, password: str) -> str:
         salt = os.urandom(16)
