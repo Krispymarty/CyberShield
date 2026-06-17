@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 
+from app.database.mongodb import get_collection
 from app.schemas.alert import AlertItem, AlertListResponse
 
 
@@ -8,32 +9,37 @@ class AlertService:
         if not user_id.strip():
             raise ValueError("User ID is required")
 
+        collection = get_collection("alerts")
+
+        docs = list(
+            collection.find({"user_id": user_id}).sort("created_at", -1)
+        )
+
+        alerts = []
+
+        for doc in docs:
+            doc.pop("_id", None)
+
+            alerts.append(
+                AlertItem(
+                    alert_id=doc.get("alert_id", ""),
+                    user_id=doc.get("user_id", user_id),
+                    alert_type=doc.get("alert_type", "UNKNOWN"),
+                    severity=doc.get("severity", "LOW"),
+                    status=doc.get("status", "OPEN"),
+                    title=doc.get("title", ""),
+                    description=doc.get("description", ""),
+                    risk_score=doc.get("risk_score", 0),
+                    recommended_action=doc.get(
+                        "recommended_action",
+                        "Review activity"
+                    ),
+                    created_at=doc.get("created_at")
+                    or datetime.now(timezone.utc),
+                )
+            )
+
         return AlertListResponse(
             user_id=user_id,
-            alerts=[
-                AlertItem(
-                    alert_id="ALT001",
-                    user_id=user_id,
-                    alert_type="LOCATION_ANOMALY",
-                    severity="HIGH",
-                    status="OPEN",
-                    title="Impossible travel detected",
-                    description="Login observed from two distant cities within a short time window.",
-                    risk_score=84,
-                    recommended_action="Require step-up verification and review recent transfers.",
-                    created_at=datetime(2026, 6, 8, 5, 40, tzinfo=timezone.utc),
-                ),
-                AlertItem(
-                    alert_id="ALT002",
-                    user_id=user_id,
-                    alert_type="SIM_SWAP",
-                    severity="MEDIUM",
-                    status="ACKNOWLEDGED",
-                    title="SIM change pattern matched",
-                    description="Mobile operator metadata indicates a recent SIM profile change.",
-                    risk_score=67,
-                    recommended_action="Temporarily restrict high-value transfers.",
-                    created_at=datetime(2026, 6, 7, 19, 10, tzinfo=timezone.utc),
-                ),
-            ],
+            alerts=alerts,
         )
