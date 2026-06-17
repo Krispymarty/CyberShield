@@ -7,7 +7,7 @@ A comprehensive cybersecurity solution with AI-powered threat detection and resp
 This project consists of multiple components:
 
 - **Backend**: Python API server with ML models
-- **Mobile App**: Flutter-based mobile application
+- **Mobile App**: React Native Expo mobile application
 - **Web User**: User-facing web interface
 - **Web Admin**: Admin dashboard
 - **Database**: PostgreSQL and MongoDB databases
