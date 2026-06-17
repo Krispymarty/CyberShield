@@ -7,17 +7,29 @@ from app.schemas.admin import (
     UserStatusRequest,
     UserStatusResponse,
 )
-
+from app.database.mongodb import get_collection
 
 class AdminService:
     def get_dashboard(self) -> AdminDashboardResponse:
+        alerts = get_collection("alerts")
+        fraud_cases = get_collection("fraud_cases")
+        risk_logs = get_collection("risk_logs")
+
         return AdminDashboardResponse(
             total_users=1000,
-            fraud_attempts=50,
+            fraud_attempts=alerts.count_documents({}),
             blocked_users=20,
-            active_investigations=12,
-            high_risk_logins_today=31,
-            sim_swap_alerts_today=9,
+            active_investigations=fraud_cases.count_documents({
+                "status": "OPEN"
+            }),
+            high_risk_logins_today=risk_logs.count_documents({
+                "risk_level": {
+                    "$in": ["HIGH", "CRITICAL"]
+                }
+            }),
+            sim_swap_alerts_today=alerts.count_documents({
+                "alert_type": "SIM_SWAP"
+            }),
         )
 
     def get_users(self) -> AdminUsersResponse:
