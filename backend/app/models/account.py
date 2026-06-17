@@ -9,7 +9,7 @@ class Account(Base):
 
     account_id = Column(Integer, primary_key=True, index=True)
 
-    user_id = Column(String, ForeignKey("users.user_id"))
+    user_id = Column(Integer, ForeignKey("users.user_id"))
 
     account_number = Column(String(20), unique=True, nullable=False)
 
