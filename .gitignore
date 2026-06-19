@@ -4,6 +4,13 @@ node_modules/
 # Python cache
 __pycache__/
 *.pyc
+<<<<<<< HEAD
+.env
+backend/.env
+backend/.env
+backend/.venv
+.venv/
+=======
 *.pyo
 *.pyd
 
@@ -18,3 +25,4 @@ env/
 # OS files
 .DS_Store
 Thumbs.db
+>>>>>>> origin/master
