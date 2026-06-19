@@ -1,9 +1,28 @@
 node_modules/
-.env.venv/
+.env
+
+# Python cache
 __pycache__/
 *.pyc
+<<<<<<< HEAD
 .env
 backend/.env
 backend/.env
 backend/.venv
 .venv/
+=======
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+>>>>>>> origin/master

@@ -6,7 +6,7 @@ from collections.abc import Generator
 
 from app.config import POSTGRES_URL
 
-DATABASE_URL = POSTGRES_URL or "postgresql://postgres:password@localhost:5432/sentinel"
+DATABASE_URL = POSTGRES_URL
 
 engine = create_engine(DATABASE_URL)
 
