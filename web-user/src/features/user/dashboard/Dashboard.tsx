@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import TransferPage from "../transfer/TransferPage";
+import TransferPage from "@/features/transfer/TransferPage";
 import {
   Bell,
   HelpCircle,
