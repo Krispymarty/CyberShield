@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.models.user import User
 from app.schemas.auth import AuthResponse, AuthUser, LoginRequest, RegisterRequest
-
+from app.services.jwt_service import create_access_token
 
 class AuthService:
     print("AUTH SERVICE LOADED")
@@ -47,7 +47,12 @@ class AuthService:
         return AuthResponse(
             success=True,
             message="User registered successfully",
-            access_token=f"mock_access_token_{user.user_id}",
+            access_token=create_access_token(
+                {
+                    "sub": str(user.user_id),
+                    "email": user.email,
+                }
+            ),
             user=AuthUser(
                 user_id=user.user_id,
                 full_name=user.full_name,
@@ -74,7 +79,12 @@ class AuthService:
         return AuthResponse(
             success=True,
             message="Login successful",
-            access_token=f"mock_access_token_{user.user_id}",
+            access_token=create_access_token(
+                {
+                    "sub": str(user.user_id),
+                    "email": user.email,
+                }
+            ),
             user=AuthUser(
                 user_id=user.user_id,
                 full_name=user.full_name,
