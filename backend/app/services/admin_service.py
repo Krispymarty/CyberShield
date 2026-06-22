@@ -1,4 +1,9 @@
 from datetime import datetime, timezone
+from sqlalchemy.orm import Session
+
+from app.models.alert import Alert
+from app.models.risk_log import RiskLog
+from app.models.fraud_case import FraudCase
 
 from app.schemas.admin import (
     AdminDashboardResponse,
@@ -7,29 +12,37 @@ from app.schemas.admin import (
     UserStatusRequest,
     UserStatusResponse,
 )
-from app.database.mongodb import get_collection
+
 
 class AdminService:
-    def get_dashboard(self) -> AdminDashboardResponse:
-        alerts = get_collection("alerts")
-        fraud_cases = get_collection("fraud_cases")
-        risk_logs = get_collection("risk_logs")
+    def __init__(self, db: Session):
+        self.db = db
 
+    def get_dashboard(self) -> AdminDashboardResponse:
         return AdminDashboardResponse(
             total_users=1000,
-            fraud_attempts=alerts.count_documents({}),
+
+            fraud_attempts=
+            self.db.query(Alert).count(),
+
             blocked_users=20,
-            active_investigations=fraud_cases.count_documents({
-                "status": "OPEN"
-            }),
-            high_risk_logins_today=risk_logs.count_documents({
-                "risk_level": {
-                    "$in": ["HIGH", "CRITICAL"]
-                }
-            }),
-            sim_swap_alerts_today=alerts.count_documents({
-                "alert_type": "SIM_SWAP"
-            }),
+
+            active_investigations=
+            self.db.query(FraudCase)
+            .filter(FraudCase.status == "OPEN")
+            .count(),
+
+            high_risk_logins_today=
+            self.db.query(RiskLog)
+            .filter(
+                RiskLog.risk_level.in_(["HIGH", "CRITICAL"])
+            )
+            .count(),
+
+            sim_swap_alerts_today=
+            self.db.query(Alert)
+            .filter(Alert.alert_type == "SIM_SWAP")
+            .count(),
         )
 
     def get_users(self) -> AdminUsersResponse:
@@ -42,7 +55,14 @@ class AdminService:
                     status="ACTIVE",
                     trust_score=92,
                     risk_level="LOW",
-                    last_login_at=datetime(2026, 6, 8, 8, 55, tzinfo=timezone.utc),
+                    last_login_at=datetime(
+                        2026,
+                        6,
+                        8,
+                        8,
+                        55,
+                        tzinfo=timezone.utc,
+                    ),
                 ),
                 AdminUserItem(
                     user_id="USR404",
@@ -51,12 +71,23 @@ class AdminService:
                     status="UNDER_REVIEW",
                     trust_score=48,
                     risk_level="HIGH",
-                    last_login_at=datetime(2026, 6, 8, 3, 15, tzinfo=timezone.utc),
+                    last_login_at=datetime(
+                        2026,
+                        6,
+                        8,
+                        3,
+                        15,
+                        tzinfo=timezone.utc,
+                    ),
                 ),
-            ],
+            ]
         )
 
-    def block_user(self, payload: UserStatusRequest) -> UserStatusResponse:
+    def block_user(
+        self,
+        payload: UserStatusRequest,
+    ) -> UserStatusResponse:
+
         return UserStatusResponse(
             success=True,
             message=f"User blocked. Reason: {payload.reason}",
@@ -64,7 +95,11 @@ class AdminService:
             status="BLOCKED",
         )
 
-    def unblock_user(self, payload: UserStatusRequest) -> UserStatusResponse:
+    def unblock_user(
+        self,
+        payload: UserStatusRequest,
+    ) -> UserStatusResponse:
+
         return UserStatusResponse(
             success=True,
             message=f"User unblocked. Reason: {payload.reason}",
