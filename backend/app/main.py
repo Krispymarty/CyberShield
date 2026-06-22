@@ -18,6 +18,13 @@ from app.api.dashboard import router as dashboard_router
 from app.api.device import router as device_router
 from app.api.transactions import router as transaction_router
 
+from app.models.device_log import DeviceLog
+from app.models.behavior_log import BehaviorLog
+from app.models.location_history import LocationHistory
+from app.models.risk_log import RiskLog
+from app.models.alert import Alert
+from app.models.fraud_case import FraudCase
+
 app = FastAPI(title="Sentinel AI API")
 Base.metadata.create_all(bind=engine)
 
