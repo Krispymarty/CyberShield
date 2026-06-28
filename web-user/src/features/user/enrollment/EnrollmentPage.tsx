@@ -8,19 +8,53 @@ import { Step } from "./components/Step";
 import { IdentityProfile } from "./steps/IdentityProfile";
 import { DeviceLink } from "./steps/DeviceLink";
 import { SecuritySetup } from "./steps/SecuritySetup";
+import { register } from "@/lib/api";
+import { saveAuth } from "@/lib/auth";
 
 export function EnrollmentPage() {
-  const [step, setStep] = useState(1);
   const router = useRouter();
+
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({
+  full_name: "",
+  email: "",
+  phone: "",
+  password: "",
+  location: "Dubai",
+  national_id: "",
+  device_id: "web-browser",
+  ip_address: "127.0.0.1",
+});
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const updateForm = (field: keyof typeof form, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
 
   const goNext = () => {
     if (step < 3) setStep(step + 1);
-    else router.push("/dashboard");
   };
 
   const goBack = () => {
     if (step > 1) setStep(step - 1);
     else router.push("/login");
+  };
+
+  const completeEnrollment = async () => {
+    setError("");
+    setLoading(true);
+
+    try {
+      const data = await register(form);
+      saveAuth(data);
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Registration failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -86,9 +120,30 @@ export function EnrollmentPage() {
 
         <section className="flex-1 flex flex-col items-center px-5 sm:px-8 py-10 lg:pt-14">
           <div className="w-full max-w-[660px]">
-            {step === 1 && <IdentityProfile onNext={goNext} onBack={goBack} />}
-            {step === 2 && <DeviceLink onNext={goNext} onBack={goBack} />}
-            {step === 3 && <SecuritySetup onNext={goNext} onBack={goBack} />}
+            {step === 1 && (
+              <IdentityProfile
+                form={form}
+                updateForm={updateForm}
+                onNext={goNext}
+                onBack={goBack}
+              />
+            )}
+
+            {step === 2 && (
+              <DeviceLink
+                onNext={goNext}
+                onBack={goBack}
+              />
+            )}
+
+            {step === 3 && (
+              <SecuritySetup
+                onNext={completeEnrollment}
+                onBack={goBack}
+                loading={loading}
+                error={error}
+              />
+            )}
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-10 mt-10 lg:mt-14 text-slate-600 font-medium text-sm">
               <span className="flex items-center gap-2">
