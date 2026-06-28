@@ -17,6 +17,7 @@ import {
 import { DashboardHome } from "./DashboardHome";
 import SecurityDashboard from "./SecurityDashboard";
 import RiskIntelligence from "../risk-intelligence/riskintelligence";
+import { logout } from "@/lib/auth";
 
 const navItems = [
   ["Dashboard", LayoutDashboard],
@@ -94,6 +95,12 @@ export default function Dashboard() {
             <button className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100">
               <Bell size={18} />
             </button>
+             <button
+    onClick={logout}
+    className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-100"
+  >
+    Logout
+  </button>
 
             <div className="hidden h-9 w-9 rounded-full bg-[#062747] sm:block" />
           </div>

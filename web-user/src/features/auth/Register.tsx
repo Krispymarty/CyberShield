@@ -1,7 +1,50 @@
+"use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Check, Shield } from "lucide-react";
+import { register } from "@/lib/api";
+import { saveAuth } from "@/lib/auth";
 
 export default function Register() {
+  const router = useRouter();
+
+  const [form, setForm] = useState({
+  full_name: "",
+  email: "",
+  phone: "",
+  password: "",
+  location: "Dubai",
+  national_id: "",
+  device_id: "web-browser",
+  ip_address: "127.0.0.1",
+});
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  function updateField(field: keyof typeof form, value: string) {
+    setForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  }
+
+  async function handleRegister() {
+    setError("");
+    setLoading(true);
+
+    try {
+      const data = await register(form);
+      saveAuth(data);
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[#f6f8fd] text-slate-950">
       <header className="h-20 bg-[#062747] text-white flex items-center justify-between px-14 rounded-t-[28px]">
@@ -45,22 +88,79 @@ export default function Register() {
             </p>
 
             <div className="bg-white border border-slate-300 rounded-2xl p-9 shadow-sm">
+              <Field
+                label="Full Name"
+                value={form.full_name}
+                onChange={(value) => updateField("full_name", value)}
+                placeholder="John Doe"
+                className="mb-7"
+              />
+
+              <Field
+                label="Work Email Address"
+                value={form.email}
+                onChange={(value) => updateField("email", value)}
+                placeholder="j.doe@company.com"
+                className="mb-7"
+                type="email"
+              />
+
+              <Field
+                label="Phone Number"
+                value={form.phone}
+                onChange={(value) => updateField("phone", value)}
+                placeholder="9876543210"
+                className="mb-7"
+              />
+
+              <Field
+                label="Password"
+                value={form.password}
+                onChange={(value) => updateField("password", value)}
+                placeholder="Enter password"
+                className="mb-7"
+                type="password"
+              />
+
               <div className="grid grid-cols-2 gap-5 mb-7">
-                <Field label="First Name" value="John" />
-                <Field label="Last Name" value="Doe" />
+                <Field
+                  label="Location"
+                  value={form.location}
+                  onChange={(value) => updateField("location", value)}
+                  placeholder="Dubai"
+                />
+
+                <Field
+                  label="National ID"
+                  value={form.national_id}
+                  onChange={(value) => updateField("national_id", value)}
+                  placeholder="A12345678"
+                />
               </div>
 
-              <Field label="Work Email Address" value="j.doe@company.com" className="mb-7" />
-              <Field label="Employee Serial ID" value="SN-XXXX-XXXX" />
+              {error && (
+                <p className="mb-5 rounded bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                  {error}
+                </p>
+              )}
 
               <div className="border-t border-slate-300 mt-7 pt-5 flex items-center justify-between">
-                <button className="flex items-center gap-3 font-semibold">
+                <button
+                  type="button"
+                  onClick={() => router.push("/login")}
+                  className="flex items-center gap-3 font-semibold"
+                >
                   <ArrowLeft size={22} />
                   Back
                 </button>
 
-                <button className="bg-[#020817] text-white px-9 py-2 rounded font-semibold">
-                  Continue to Device Link
+                <button
+                  type="button"
+                  onClick={handleRegister}
+                  disabled={loading}
+                  className="bg-[#020817] text-white px-9 py-2 rounded font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {loading ? "Creating Account..." : "Create Account"}
                 </button>
               </div>
             </div>
@@ -115,19 +215,27 @@ function Step({
 function Field({
   label,
   value,
+  onChange,
+  placeholder,
   className = "",
+  type = "text",
 }: {
   label: string;
   value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
   className?: string;
+  type?: string;
 }) {
   return (
     <label className={`block ${className}`}>
       <span className="block font-semibold mb-3">{label}</span>
       <input
-        readOnly
+        type={type}
         value={value}
-        className="w-full h-11 rounded border border-slate-300 bg-[#eef4ff] px-5 text-slate-500"
+        placeholder={placeholder}
+        onChange={(event) => onChange(event.target.value)}
+        className="w-full h-11 rounded border border-slate-300 bg-[#eef4ff] px-5 text-slate-700 outline-none"
       />
     </label>
   );
