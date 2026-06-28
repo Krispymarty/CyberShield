@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Check, Fingerprint, KeyRound, ScanFace } from "lucide-react";
+import { Check, KeyRound } from "lucide-react";
 import { login } from "@/lib/api";
 import { saveAuth } from "@/lib/auth";
 
@@ -25,7 +25,8 @@ export default function LoginPage() {
         email,
         password,
         device_id: "web-browser",
-        location,
+        location: "India",
+        ip_address: "127.0.0.1",
       });
 
       saveAuth(data);
@@ -37,10 +38,16 @@ export default function LoginPage() {
     }
   }
 
+  const inputClass =
+    "h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10";
+
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-[#f5f7fc]">
       <section className="relative overflow-hidden bg-[#062747] text-white px-6 sm:px-10 lg:px-12 pt-10 lg:pt-14 pb-20 lg:pb-12 min-h-[520px] lg:min-h-screen">
         <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_center,#1e88e5_1px,transparent_1px)] [background-size:18px_18px]" />
+
+        <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="absolute bottom-10 left-10 h-56 w-56 rounded-full bg-cyan-400/10 blur-3xl" />
 
         <div className="relative z-10 h-9 w-9 rounded-full border border-blue-300/30 flex items-center justify-center mb-12 lg:mb-16">
           <Check size={18} />
@@ -54,135 +61,105 @@ export default function LoginPage() {
           </h1>
 
           <p className="mt-7 max-w-[520px] text-[15px] sm:text-[16px] leading-7 text-slate-400">
-            The enterprise-grade security layer that leverages advanced neural
-            networks to identify and neutralize fraud before it happens.
+            Sign in securely to access real-time banking security, fraud alerts,
+            and transaction intelligence.
           </p>
         </div>
 
         <div className="absolute bottom-8 lg:bottom-16 left-6 sm:left-10 lg:left-12 z-10 flex gap-4 sm:gap-8">
-          <div className="w-[84px] rounded-lg border border-white/10 bg-white/5 px-4 py-4">
+          <div className="w-[92px] rounded-xl border border-white/10 bg-white/5 px-4 py-4 backdrop-blur">
             <p className="text-xs tracking-wide text-slate-400 mb-2">UPTIME</p>
             <p className="text-sm">
               99.999% <span className="text-blue-400">●</span>
             </p>
           </div>
 
-          <div className="w-[116px] rounded-lg border border-white/10 bg-white/5 px-4 py-4">
+          <div className="w-[126px] rounded-xl border border-white/10 bg-white/5 px-4 py-4 backdrop-blur">
             <p className="text-xs tracking-wide text-slate-400 mb-2">
               DETECTIONS
             </p>
             <p className="text-sm">2.4M / hr</p>
           </div>
         </div>
-
-        <div className="absolute top-[150px] left-[160px] h-[190px] w-[190px] border border-cyan-400/20 bg-cyan-400/5" />
-        <div className="absolute bottom-[95px] left-[158px] h-[190px] w-[190px] border border-cyan-400/20 bg-cyan-400/5" />
-        <div className="absolute top-[145px] right-[-28px] h-[190px] w-[190px] border border-cyan-400/20 bg-cyan-400/5" />
-        <div className="absolute bottom-[95px] right-[-28px] h-[190px] w-[190px] border border-cyan-400/20 bg-cyan-400/5" />
       </section>
 
-      <section className="flex items-center justify-center px-6 sm:px-10 lg:px-16 py-16 lg:py-0">
-        <div className="w-full max-w-[448px]">
-          <h2 className="text-[30px] sm:text-[32px] font-bold tracking-[-0.04em] text-[#020817]">
-            Welcome back
-          </h2>
+      <section className="flex items-center justify-center bg-[#f8fafc] px-8 lg:px-20">
+  <div className="w-full max-w-md">
+    <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#062747] text-white">
+      <KeyRound size={26} />
+    </div>
 
-          <p className="mt-2 text-[14px] text-slate-600">
-            Sign in with your registered Sentinel account.
-          </p>
+    <h2 className="text-4xl font-bold tracking-tight text-slate-900">
+      Welcome back
+    </h2>
 
-          <div className="mt-9 flex h-[56px] sm:h-[60px] items-center justify-center gap-3 rounded bg-[#062747] text-white text-[18px] sm:text-[20px] font-bold">
-            <KeyRound size={22} />
-            Secure Login
-          </div>
+    <p className="mt-3 text-slate-600">
+      Sign in with your registered Sentinel account.
+    </p>
 
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            <button className="h-9 sm:h-6 rounded border border-slate-300 text-[13px] font-bold text-slate-800 flex items-center justify-center gap-2">
-              <Fingerprint size={18} />
-              Biometric
-            </button>
+    <div className="mt-10 space-y-5">
+      <div>
+        <label className="mb-2 block text-sm font-semibold text-slate-800">
+          Work Email
+        </label>
+        <input
+          type="email"
+          placeholder="Enter email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className={inputClass}
+        />
+      </div>
 
-            <button className="h-9 sm:h-6 rounded border border-slate-300 text-[13px] font-bold text-slate-800 flex items-center justify-center gap-2">
-              <ScanFace size={18} />
-              Face ID
-            </button>
-          </div>
+      <div>
+        <label className="mb-2 block text-sm font-semibold text-slate-800">
+          Password
+        </label>
+        <input
+          type="password"
+          placeholder="Enter password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className={inputClass}
+        />
+      </div>
+    </div>
 
-          <div className="my-9 flex items-center">
-            <div className="flex-1 border-t border-slate-300" />
-            <span className="px-4 text-[12px] sm:text-[13px] font-bold tracking-wide text-slate-500 whitespace-nowrap">
-              OR USE EMAIL LOGIN
-            </span>
-            <div className="flex-1 border-t border-slate-300" />
-          </div>
+    {error && (
+      <p className="mt-5 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+        {error}
+      </p>
+    )}
 
-          <label className="block text-[13px] font-bold text-slate-800 mb-2">
-            Work Email
-          </label>
+    <button
+      onClick={handleLogin}
+      disabled={loading || !email || !password}
+      className="mt-8 h-12 w-full rounded-xl bg-[#020817] font-semibold text-white transition hover:bg-[#0b3564] disabled:opacity-50"
+    >
+      {loading ? "Signing in..." : "Login"}
+    </button>
 
-          <input
-            type="email"
-            placeholder="name@company.com"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            className="h-11 sm:h-10 w-full rounded border border-slate-300 bg-[#eef3fb] px-4 text-[16px] outline-none"
-          />
+    <p className="mt-6 text-center text-sm text-slate-600">
+      Don't have an account?{" "}
+      <Link href="/register" className="font-semibold text-blue-600">
+        Register
+      </Link>
+    </p>
 
-          <label className="mt-4 block text-[13px] font-bold text-slate-800 mb-2">
-            Password
-          </label>
+    <div className="mt-10 text-center text-sm text-slate-500">
+      <span className="text-emerald-500">●</span> System Status: All Clear
+    </div>
 
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            className="h-11 sm:h-10 w-full rounded border border-slate-300 bg-[#eef3fb] px-4 text-[16px] outline-none"
-          />
-
-          <label className="mt-4 block text-[13px] font-bold text-slate-800 mb-2">
-            Location
-          </label>
-
-          <input
-            type="text"
-            value={location}
-            onChange={(event) => setLocation(event.target.value)}
-            className="h-11 sm:h-10 w-full rounded border border-slate-300 bg-[#eef3fb] px-4 text-[16px] outline-none"
-          />
-
-          {error && (
-            <p className="mt-4 rounded bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
-              {error}
-            </p>
-          )}
-
-          <button
-            type="button"
-            onClick={handleLogin}
-            disabled={loading || !email || !password}
-            className="mt-6 flex h-10 sm:h-8 w-full items-center justify-center rounded border border-[#020817] text-[18px] sm:text-[20px] font-bold text-[#020817] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading ? "Signing in..." : "Login"}
-          </button>
-
-          <p className="mt-5 text-center text-sm font-semibold text-slate-600">
-            Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-blue-600">
-              Register
-            </Link>
-          </p>
-
-          <div className="mt-12 text-center text-[13px] font-bold tracking-wide text-slate-600">
-            <span className="text-emerald-500">●</span> System Status: All Clear
-          </div>
-
-          <div className="mt-5 flex justify-center gap-6 sm:gap-8 text-[13px] font-bold text-slate-600">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Contact Support</a>
-          </div>
-        </div>
-      </section>
+    <div className="mt-6 flex justify-center gap-8 text-sm text-slate-500">
+      <a href="#" className="hover:text-slate-800">
+        Privacy Policy
+      </a>
+      <a href="#" className="hover:text-slate-800">
+        Contact Support
+      </a>
+    </div>
+  </div>
+</section>
     </div>
   );
 }

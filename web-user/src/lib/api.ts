@@ -41,6 +41,7 @@ export function login(payload: {
   email: string;
   password: string;
   device_id: string;
+  ip_address: string;
   location: string;
 }) {
   return apiFetch<AuthResponse>("/auth/login", {
